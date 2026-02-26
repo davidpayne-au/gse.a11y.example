@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { geocodeLocation, fetchWeather, getWeatherForLocation } from './weatherService'
 import type { GeocodingResponse, WeatherResponse } from '../types/weather'
 

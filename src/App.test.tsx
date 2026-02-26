@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import App from './App'
@@ -6,16 +5,6 @@ import App from './App'
 beforeEach(() => {
   localStorage.clear()
   document.documentElement.classList.remove('dark')
-  vi.spyOn(window, 'matchMedia').mockReturnValue({
-    matches: false,
-    media: '',
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  } as unknown as MediaQueryList)
 })
 
 describe('App', () => {

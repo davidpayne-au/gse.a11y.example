@@ -40,7 +40,6 @@ export default function AboutPage() {
           App stats
         </h2>
         <ul
-          role="list"
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 list-none p-0 m-0"
         >
           {APP_STATS.map((stat) => (

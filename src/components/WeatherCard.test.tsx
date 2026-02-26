@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import WeatherCard from './WeatherCard'

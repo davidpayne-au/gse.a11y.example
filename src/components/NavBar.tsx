@@ -29,7 +29,7 @@ export default function NavBar() {
         </NavLink>
 
         {/* Nav links */}
-        <ul className="flex items-center gap-1 list-none m-0 p-0" role="list">
+        <ul className="flex items-center gap-1 list-none m-0 p-0">
           <li>
             <NavLink to="/" end className={navLinkClass}>
               Home

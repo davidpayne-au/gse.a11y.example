@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import AboutPage from './AboutPage'
@@ -35,7 +34,8 @@ describe('AboutPage', () => {
   it('renders build info section with version', () => {
     render(<AboutPage />)
     expect(screen.getByRole('heading', { level: 2, name: /build info/i })).toBeInTheDocument()
-    expect(screen.getByText(/version/i)).toBeInTheDocument()
+    // Use getAllByText since "Version" appears in both the table header and build info
+    expect(screen.getAllByText(/version/i).length).toBeGreaterThan(0)
   })
 
   it('has no accessibility violations', async () => {

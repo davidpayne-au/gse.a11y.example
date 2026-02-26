@@ -63,7 +63,7 @@ Accessibility (a11y) is treated as a first-class concern throughout this project
 |---|---|---|
 | **Unit tests** | [jest-axe](https://github.com/nicholasgasior/jest-axe) + [axe-core](https://github.com/dequelabs/axe-core) | Every component and page is rendered in jsdom and run through axe-core. The `toHaveNoViolations()` matcher fails the test if any WCAG violation is found. |
 | **Static analysis** | [eslint-plugin-jsx-a11y](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) | ESLint flags missing `alt` text, non-interactive elements with click handlers, missing ARIA roles, and other common mistakes at author time. |
-| **E2E tests** | [Playwright](https://playwright.dev) | End-to-end tests verify keyboard navigation, focus management, and that key landmarks (headings, navigation, main) are present in the rendered page. |
+| **E2E tests** | [Playwright](https://playwright.dev) + [@axe-core/playwright](https://github.com/dequelabs/axe-core-npm/tree/develop/packages/playwright) | End-to-end axe-core scans run against a real Chromium browser on every page state: idle, weather result, error, dark mode, and the about page. Keyboard navigation, focus management, and landmark presence are also verified. |
 
 ### What is covered per file
 
@@ -106,7 +106,7 @@ GitHub Actions runs on every push and pull request to `main`:
 - **lint** — ESLint
 - **build** — TypeScript type-check + Vite build (sets correct base path for GitHub Pages)
 - **test** — Vitest unit tests with V8 coverage (coverage uploaded as an artifact)
-- **e2e** — Playwright E2E tests against a local `vite preview` server (26 tests across home, about, navigation, theme, and smoke specs)
+- **e2e** — Playwright E2E tests against a local `vite preview` server (home, about, navigation, theme, a11y, and smoke specs); the `a11y` spec runs `@axe-core/playwright` scans across all page states
 - **deploy** — publishes `dist/` to GitHub Pages (push to `main` only, after build + test + e2e all pass)
 - **smoke** — Playwright smoke tests run against the live deployed URL after deployment
 

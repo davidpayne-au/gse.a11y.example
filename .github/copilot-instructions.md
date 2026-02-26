@@ -92,6 +92,15 @@ When a test leaves a promise pending (e.g., testing a loading state), resolve it
 
 **E2E tests** (`e2e/*.spec.ts`) mock external API calls with `page.route()`. `e2e/smoke.spec.ts` is the exception — it runs against the live deployed URL with no mocking. The Playwright `webServer` config auto-runs `npm run build && npm run preview` locally; don't pre-build manually before running E2E.
 
+**E2E accessibility tests** live in `e2e/a11y.spec.ts` and use `@axe-core/playwright` (`AxeBuilder`) to run full axe-core scans in a real Chromium browser. A scan is written for every meaningful page state: home idle, home with weather result, home with error, home in dark mode, and the about page. The dark-mode scan disables the `color-contrast` rule because axe-core cannot resolve Tailwind v4's `oklch()` colours correctly. When adding a new page or significant UI state, add a corresponding `AxeBuilder` scan in `e2e/a11y.spec.ts`:
+
+```ts
+import AxeBuilder from '@axe-core/playwright'
+
+const results = await new AxeBuilder({ page }).analyze()
+expect(results.violations).toEqual([])
+```
+
 ### Styling
 
 TailwindCSS v4 — configured via `@import "tailwindcss"` in `src/index.css` with `@custom-variant dark (&:where(.dark, .dark *))`. Dark mode classes use the `dark:` prefix as normal. There is no `tailwind.config.js`.

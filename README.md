@@ -59,8 +59,12 @@ Weather data comes from two free Open-Meteo endpoints:
 
 GitHub Actions runs on every push and pull request to `main`:
 
-- **CI** (`.github/workflows/ci.yml`) — lint → build → test (with coverage artifact)
-- **Deploy** (`.github/workflows/deploy.yml`) — builds and publishes to GitHub Pages on push to `main`
+- **lint** — ESLint
+- **build** — TypeScript type-check + Vite build (sets correct base path for GitHub Pages)
+- **test** — Vitest with V8 coverage (coverage uploaded as an artifact)
+- **deploy** — publishes `dist/` to GitHub Pages (push to `main` only, after build + test pass)
+
+All four jobs live in `.github/workflows/ci.yml`.
 
 The Vite `base` path is set automatically from `GITHUB_REPOSITORY` so assets resolve correctly under `/<repo-name>/` on GitHub Pages.
 

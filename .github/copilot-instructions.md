@@ -20,6 +20,8 @@ npm run test:smoke       # playwright smoke tests — requires BASE_URL env var
 npx vitest run src/components/WeatherCard.test.tsx
 ```
 
+Vitest is scoped to `src/**/*.test.{ts,tsx}` — the `e2e/` Playwright specs are excluded via `include` in `vite.config.ts`.
+
 **Run a single E2E spec:**
 ```bash
 npx playwright test e2e/home.spec.ts

@@ -8,7 +8,7 @@ export default function NavBar() {
     [
       'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
       isActive
-        ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+        ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-100'
         : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
     ].join(' ')
 
@@ -45,7 +45,7 @@ export default function NavBar() {
         {/* Version + Theme toggle */}
         <div className="flex items-center gap-2 shrink-0">
           <span
-            className="text-xs font-mono text-gray-400 dark:text-gray-500 hidden sm:block"
+            className="text-xs font-mono text-gray-500 dark:text-gray-400 hidden sm:block"
             aria-label={`Version ${__APP_VERSION__}`}
           >
             v{__APP_VERSION__}

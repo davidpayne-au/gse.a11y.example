@@ -74,7 +74,7 @@ export default function AboutPage() {
               href="https://open-meteo.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sky-600 dark:text-sky-400 underline hover:text-sky-800 dark:hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 rounded"
+              className="text-sky-700 dark:text-sky-400 underline hover:text-sky-800 dark:hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 rounded"
             >
               Open-Meteo
             </a>

@@ -23,7 +23,7 @@ export default function HomePage() {
         >
           What&apos;s the weather like?
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
+        <p className="text-gray-600 dark:text-gray-300 text-lg mb-8">
           Enter any city in the world to get the current conditions.
         </p>
         <LocationSearch onSearch={handleSearch} disabled={status === 'loading'} />
@@ -44,12 +44,12 @@ export default function HomePage() {
               😕
             </p>
             <p className="font-semibold text-red-700 dark:text-red-400">Could not get weather</p>
-            <p className="text-sm text-red-600 dark:text-red-300 mt-1">{error}</p>
+            <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
           </div>
         )}
 
         {status === 'idle' && !searched && (
-          <div className="text-center text-gray-400 dark:text-gray-600 mt-8">
+          <div className="text-center text-gray-500 dark:text-gray-300 mt-8">
             <p className="text-5xl mb-4" aria-hidden="true">
               🌍
             </p>

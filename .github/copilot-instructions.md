@@ -49,7 +49,7 @@ ThemeProvider (src/context/ThemeContext.tsx)
 
 **Theme system:** `ThemeContext` is the single source of truth. It reads from `localStorage` on mount (with OS preference fallback), toggles the `dark` class on `<html>`, and writes back to `localStorage`. `main.tsx` also applies the stored class synchronously before React renders to prevent flash.
 
-**Version number:** Read from `package.json` at build time via `vite.config.ts` `define: { __APP_VERSION__ }`. Declared as a global in `src/vite-env.d.ts`. Bump `package.json` version to update it everywhere.
+**Version number:** Read from `package.json` at build time via `vite.config.ts` `define: { __APP_VERSION__ }`. Declared as a global in `src/vite-env.d.ts`. In CI, `GITHUB_SHA` is appended as semver build metadata (e.g. `1.0.0+abc1234`) so every deployment is uniquely identifiable without bumping `package.json`. Local builds always show the bare `package.json` version. Bump `package.json` version for a meaningful release; the SHA suffix handles same-day deployments automatically.
 
 **GitHub Pages base path:** `vite.config.ts` reads `process.env.GITHUB_REPOSITORY` and sets `base` to `/<repo-name>/`. This is injected by the CI `build` job. Local builds always use `base: "/"`.
 

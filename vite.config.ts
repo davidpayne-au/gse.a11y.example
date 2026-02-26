@@ -10,12 +10,18 @@ const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as { version: st
 const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1]
 const base = repoName ? `/${repoName}/` : '/'
 
+// Locally: use the version from package.json (e.g. "1.0.0").
+// In CI: append the short commit SHA as semver build metadata (e.g. "1.0.0+abc1234")
+// so each deployment is uniquely identifiable even when package.json hasn't been bumped.
+const sha = process.env.GITHUB_SHA?.slice(0, 7)
+const appVersion = sha ? `${pkg.version}+${sha}` : pkg.version
+
 // https://vite.dev/config/
 export default defineConfig({
   base,
   plugins: [react(), tailwindcss()],
   define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_VERSION__: JSON.stringify(appVersion),
   },
   test: {
     globals: true,

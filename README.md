@@ -1,5 +1,7 @@
 # WeatherNow ⛅
 
+[![CI / CD](https://github.com/davidpayne-au/gse.a11y.example/actions/workflows/ci.yml/badge.svg)](https://github.com/davidpayne-au/gse.a11y.example/actions/workflows/ci.yml)
+
 A simple, accessible weather app built with React, TypeScript, and Vite. Enter any city name to get the current weather conditions using the free [Open-Meteo](https://open-meteo.com) API — no API key required.
 
 ## Features

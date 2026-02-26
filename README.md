@@ -33,6 +33,9 @@ npm run dev        # http://localhost:5173
 | `npm run format` | Format source files with Prettier |
 | `npm test` | Run unit tests (Vitest) |
 | `npm run test:watch` | Run tests in watch mode |
+| `npm run test:e2e` | Run Playwright E2E tests (builds + starts preview server) |
+| `npm run test:smoke` | Run smoke tests against a deployed URL (set `BASE_URL`) |
+| `npm run test:e2e:report` | Open last Playwright HTML report |
 | `npm run test:coverage` | Run tests with V8 coverage report |
 
 ## Tech stack
@@ -47,7 +50,7 @@ npm run dev        # http://localhost:5173
 | Vitest | 4 | Unit testing |
 | Testing Library | 16 | Component testing |
 | jest-axe / axe-core | 10 / 4 | Accessibility testing |
-| ESLint | 9 | Linting (flat config + jsx-a11y) |
+| Playwright | 1.58 | E2E testing |
 | Prettier | 3 | Code formatting |
 
 ## Weather API
@@ -63,8 +66,10 @@ GitHub Actions runs on every push and pull request to `main`:
 
 - **lint** — ESLint
 - **build** — TypeScript type-check + Vite build (sets correct base path for GitHub Pages)
-- **test** — Vitest with V8 coverage (coverage uploaded as an artifact)
-- **deploy** — publishes `dist/` to GitHub Pages (push to `main` only, after build + test pass)
+- **test** — Vitest unit tests with V8 coverage (coverage uploaded as an artifact)
+- **e2e** — Playwright E2E tests against a local `vite preview` server (26 tests across home, about, navigation, theme, and smoke specs)
+- **deploy** — publishes `dist/` to GitHub Pages (push to `main` only, after build + test + e2e all pass)
+- **smoke** — Playwright smoke tests run against the live deployed URL after deployment
 
 All four jobs live in `.github/workflows/ci.yml`.
 

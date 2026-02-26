@@ -69,14 +69,17 @@ describe('HomePage', () => {
 
   it('shows loading spinner during fetch', async () => {
     let resolveSearch!: (data: WeatherData) => void
-    vi.spyOn(weatherService, 'getWeatherForLocation').mockReturnValue(
-      new Promise((resolve) => (resolveSearch = resolve)),
-    )
+    const pendingPromise = new Promise<WeatherData>((resolve) => (resolveSearch = resolve))
+    vi.spyOn(weatherService, 'getWeatherForLocation').mockReturnValue(pendingPromise)
     const user = userEvent.setup()
     render(<Wrapper />)
     await user.type(screen.getByRole('searchbox'), 'Brisbane{Enter}')
     expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument()
-    act(() => resolveSearch(mockWeatherData))
+    // Resolve the promise inside act so React can flush the resulting state update
+    await act(async () => {
+      resolveSearch(mockWeatherData)
+      await pendingPromise
+    })
   })
 
   it('shows weather card after successful search', async () => {

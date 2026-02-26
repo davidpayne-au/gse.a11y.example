@@ -5,8 +5,14 @@ import { readFileSync } from 'node:fs'
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as { version: string }
 
+// When deploying to GitHub Pages the assets must be served from /<repo-name>/.
+// GITHUB_REPOSITORY is set automatically by Actions (format: "owner/repo").
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1]
+const base = repoName ? `/${repoName}/` : '/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base,
   plugins: [react(), tailwindcss()],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),

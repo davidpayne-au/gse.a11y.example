@@ -6,7 +6,10 @@
 npm run dev              # dev server at http://localhost:5173
 npm run build            # tsc + vite build (base path = / locally)
 npm run lint             # ESLint
+npm run lint:fix         # ESLint with auto-fix
+npm run format           # Prettier on src/
 npm run test             # vitest run (all unit tests, no coverage)
+npm run test:watch       # vitest in watch mode
 npm run test:coverage    # vitest run --coverage
 npm run test:e2e         # playwright (auto-builds + starts vite preview at :4173)
 npm run test:smoke       # playwright smoke tests — requires BASE_URL env var
@@ -48,6 +51,7 @@ ThemeProvider (src/context/ThemeContext.tsx)
 
 **GitHub Pages base path:** `vite.config.ts` reads `process.env.GITHUB_REPOSITORY` and sets `base` to `/<repo-name>/`. This is injected by the CI `build` job. Local builds always use `base: "/"`.
 
+**CI pipeline job order:** `lint` → `[test, build, e2e]` (parallel) → `deploy` (push to main only, needs all three) → `smoke` (runs Playwright against the live `${{ needs.deploy.outputs.page_url }}`). The `e2e` job builds without `GITHUB_REPOSITORY` so the local preview serves at `/`.
 ## Conventions
 
 ### Testing
@@ -90,6 +94,8 @@ When a test leaves a promise pending (e.g., testing a loading state), resolve it
 
 TailwindCSS v4 — configured via `@import "tailwindcss"` in `src/index.css` with `@custom-variant dark (&:where(.dark, .dark *))`. Dark mode classes use the `dark:` prefix as normal. There is no `tailwind.config.js`.
 
-### ESLint
+### TypeScript
+
+`tsconfig.app.json` enables `erasableSyntaxOnly`, which forbids TypeScript-only runtime constructs. Do not use `enum` (use `as const` objects instead) or `namespace` used as a value. Parameterised decorators and legacy `declare` patterns are also out.
 
 The config enforces `jsx-a11y` rules. The one intentional disable is in `ThemeContext.tsx` where `useTheme` is co-located with `ThemeProvider` in the same file (standard context pattern) — the `react-refresh/only-export-components` rule is suppressed on that export with an inline comment.

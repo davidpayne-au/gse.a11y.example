@@ -101,3 +101,11 @@ TailwindCSS v4 — configured via `@import "tailwindcss"` in `src/index.css` wit
 `tsconfig.app.json` enables `erasableSyntaxOnly`, which forbids TypeScript-only runtime constructs. Do not use `enum` (use `as const` objects instead) or `namespace` used as a value. Parameterised decorators and legacy `declare` patterns are also out.
 
 The config enforces `jsx-a11y` rules. The one intentional disable is in `ThemeContext.tsx` where `useTheme` is co-located with `ThemeProvider` in the same file (standard context pattern) — the `react-refresh/only-export-components` rule is suppressed on that export with an inline comment.
+
+## Github actions
+
+Always use the latest version of github actions. For example the - uses: actions/checkout@v4 should instead be the latest version with is currently 6. This ensures that you have the latest features and security updates. You can check for the latest version of an action on the GitHub Marketplace or the action's repository.
+
+```yaml
+- uses: actions/checkout@v6
+```

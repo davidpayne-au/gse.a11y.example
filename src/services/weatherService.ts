@@ -16,12 +16,17 @@ export async function geocodeLocation(name: string): Promise<GeocodingResult> {
   return data.results[0]
 }
 
-export async function fetchWeather(latitude: number, longitude: number): Promise<WeatherResponse> {
+export async function fetchWeather(
+  latitude: number,
+  longitude: number,
+  timezone?: string,
+): Promise<WeatherResponse> {
   const params = new URLSearchParams({
     latitude: latitude.toString(),
     longitude: longitude.toString(),
     current:
       'temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,is_day',
+    ...(timezone ? { timezone } : {}),
   })
   const url = `${FORECAST_URL}?${params}`
   const response = await fetch(url)
@@ -33,7 +38,7 @@ export async function fetchWeather(latitude: number, longitude: number): Promise
 
 export async function getWeatherForLocation(name: string): Promise<WeatherData> {
   const location = await geocodeLocation(name)
-  const weather = await fetchWeather(location.latitude, location.longitude)
+  const weather = await fetchWeather(location.latitude, location.longitude, location.timezone)
   return {
     location,
     current: weather.current,

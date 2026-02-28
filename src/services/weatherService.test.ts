@@ -11,6 +11,7 @@ const mockGeoResponse: GeocodingResponse = {
       country: 'Australia',
       country_code: 'AU',
       admin1: 'Queensland',
+      timezone: 'Australia/Brisbane',
     },
   ],
 }
@@ -101,7 +102,30 @@ describe('fetchWeather', () => {
     )
     await expect(fetchWeather(0, 0)).rejects.toThrow('Weather fetch failed')
   })
+
+  it('includes timezone in request when provided', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockWeatherResponse),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    await fetchWeather(-27.4678, 153.0281, 'Australia/Brisbane')
+    const calledUrl: string = fetchMock.mock.calls[0][0] as string
+    expect(calledUrl).toContain('timezone=Australia%2FBrisbane')
+  })
+
+  it('omits timezone param when not provided', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockWeatherResponse),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    await fetchWeather(-27.4678, 153.0281)
+    const calledUrl: string = fetchMock.mock.calls[0][0] as string
+    expect(calledUrl).not.toContain('timezone')
+  })
 })
+
 
 describe('getWeatherForLocation', () => {
   it('combines geocoding and weather fetch', async () => {
@@ -121,5 +145,23 @@ describe('getWeatherForLocation', () => {
     expect(result.location.name).toBe('Brisbane')
     expect(result.current.temperature_2m).toBe(25.5)
     expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('passes location timezone to weather fetch', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockGeoResponse),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockWeatherResponse),
+      })
+    vi.stubGlobal('fetch', fetchMock)
+
+    await getWeatherForLocation('Brisbane')
+    const weatherUrl: string = fetchMock.mock.calls[1][0] as string
+    expect(weatherUrl).toContain('timezone=Australia%2FBrisbane')
   })
 })

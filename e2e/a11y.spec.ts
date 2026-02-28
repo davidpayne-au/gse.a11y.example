@@ -23,6 +23,7 @@ const MOCK_WEATHER = {
     weather_code: 1,
     wind_speed_10m: 15.0,
     time: '2024-01-01T12:00',
+    is_day: 1,
   },
   current_units: {
     temperature_2m: '°C',
@@ -31,6 +32,7 @@ const MOCK_WEATHER = {
     weather_code: 'wmo code',
     wind_speed_10m: 'km/h',
     time: 'iso8601',
+    is_day: '',
   },
 }
 

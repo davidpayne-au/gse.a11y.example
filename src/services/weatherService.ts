@@ -21,7 +21,7 @@ export async function fetchWeather(latitude: number, longitude: number): Promise
     latitude: latitude.toString(),
     longitude: longitude.toString(),
     current:
-      'temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m',
+      'temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,is_day',
   })
   const url = `${FORECAST_URL}?${params}`
   const response = await fetch(url)

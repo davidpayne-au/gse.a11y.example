@@ -1,12 +1,13 @@
 interface WeatherCondition {
   label: string
   emoji: string
+  nightEmoji?: string
 }
 
 const WMO_CODES: Record<number, WeatherCondition> = {
-  0: { label: 'Clear sky', emoji: '☀️' },
-  1: { label: 'Mainly clear', emoji: '🌤️' },
-  2: { label: 'Partly cloudy', emoji: '⛅' },
+  0: { label: 'Clear sky', emoji: '☀️', nightEmoji: '🌙' },
+  1: { label: 'Mainly clear', emoji: '🌤️', nightEmoji: '🌙' },
+  2: { label: 'Partly cloudy', emoji: '⛅', nightEmoji: '🌙' },
   3: { label: 'Overcast', emoji: '☁️' },
   45: { label: 'Foggy', emoji: '🌫️' },
   48: { label: 'Icy fog', emoji: '🌫️' },
@@ -34,6 +35,10 @@ const WMO_CODES: Record<number, WeatherCondition> = {
   99: { label: 'Thunderstorm with heavy hail', emoji: '⛈️' },
 }
 
-export function getWeatherCondition(code: number): WeatherCondition {
-  return WMO_CODES[code] ?? { label: 'Unknown', emoji: '🌡️' }
+export function getWeatherCondition(code: number, isDay = true): WeatherCondition {
+  const condition = WMO_CODES[code] ?? { label: 'Unknown', emoji: '🌡️' }
+  if (!isDay && condition.nightEmoji) {
+    return { ...condition, emoji: condition.nightEmoji }
+  }
+  return condition
 }

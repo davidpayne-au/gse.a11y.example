@@ -5,12 +5,28 @@ interface WeatherCardProps {
   data: WeatherData
 }
 
+function formatLocalTime(isoLocalTime: string): string {
+  const timePart = isoLocalTime.split('T')[1] ?? '00:00'
+  const [hourStr, minuteStr] = timePart.split(':')
+  const hour = parseInt(hourStr ?? '0', 10)
+  const minute = parseInt(minuteStr ?? '0', 10)
+  const period = hour >= 12 ? 'PM' : 'AM'
+  const hour12 = hour % 12 || 12
+  return `${hour12}:${String(minute).padStart(2, '0')} ${period}`
+}
+
 export default function WeatherCard({ data }: WeatherCardProps) {
   const { location, current, units } = data
-  const condition = getWeatherCondition(current.weather_code)
+  const isDay = current.is_day !== 0
+  const condition = getWeatherCondition(current.weather_code, isDay)
   const locationLabel = [location.name, location.admin1, location.country]
     .filter(Boolean)
     .join(', ')
+  const localTime = formatLocalTime(current.time)
+
+  const headerClass = isDay
+    ? 'bg-gradient-to-br from-sky-400 to-indigo-500 dark:from-sky-600 dark:to-indigo-700'
+    : 'bg-gradient-to-br from-indigo-900 to-slate-900'
 
   return (
     <article
@@ -18,11 +34,11 @@ export default function WeatherCard({ data }: WeatherCardProps) {
       className="w-full max-w-md mx-auto rounded-2xl bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
     >
       {/* Header */}
-      <div className="bg-gradient-to-br from-sky-400 to-indigo-500 dark:from-sky-600 dark:to-indigo-700 p-6 text-white">
+      <div className={`${headerClass} p-6 text-white`}>
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-2xl font-bold leading-tight">{location.name}</h2>
-            <p className="text-sky-100 text-sm mt-0.5">{locationLabel}</p>
+            <p className="text-white/80 text-sm mt-0.5">{locationLabel}</p>
           </div>
           <span
             className="text-5xl"
@@ -32,10 +48,14 @@ export default function WeatherCard({ data }: WeatherCardProps) {
             {condition.emoji}
           </span>
         </div>
-        <p className="mt-4 text-sky-100 font-medium">{condition.label}</p>
+        <p className="mt-4 text-white/80 font-medium">{condition.label}</p>
         <p className="text-6xl font-extralight mt-1">
           {Math.round(current.temperature_2m)}
           <span className="text-3xl align-top mt-2 inline-block">{units.temperature_2m}</span>
+        </p>
+        <p className="mt-2 text-white/70 text-sm">
+          Local time:{' '}
+          <time dateTime={current.time}>{localTime}</time>
         </p>
       </div>
 

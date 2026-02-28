@@ -22,6 +22,7 @@ export interface WeatherCurrent {
   weather_code: number
   wind_speed_10m: number
   time: string
+  is_day: number
 }
 
 export interface WeatherCurrentUnits {
@@ -31,6 +32,7 @@ export interface WeatherCurrentUnits {
   weather_code: string
   wind_speed_10m: string
   time: string
+  is_day: string
 }
 
 export interface WeatherResponse {

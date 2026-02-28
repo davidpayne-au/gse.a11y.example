@@ -54,6 +54,7 @@ ThemeProvider (src/context/ThemeContext.tsx)
 **GitHub Pages base path:** `vite.config.ts` reads `process.env.GITHUB_REPOSITORY` and sets `base` to `/<repo-name>/`. This is injected by the CI `build` job. Local builds always use `base: "/"`.
 
 **CI pipeline job order:** `lint` → `[test, build, e2e]` (parallel) → `deploy` (push to main only, needs all three) → `smoke` (runs Playwright against the live `${{ needs.deploy.outputs.page_url }}`). The `e2e` job builds without `GITHUB_REPOSITORY` so the local preview serves at `/`.
+
 ## Conventions
 
 ### Testing
